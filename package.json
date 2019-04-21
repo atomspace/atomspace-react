@@ -1,0 +1,53 @@
+{
+	"name": "@atomspace/react",
+	"version": "0.1.0",
+	"description": "Neutrino preset for creating a React project",
+	"main": "src/index.js",
+	"scripts": {
+		"pretest": "neutrino lint",
+		"lint": "neutrino lint --fix"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/atomspace/atomspace-react.git"
+	},
+	"keywords": [
+		"neutrino",
+		"neutrino-preset",
+		"atomspace",
+		"react"
+	],
+	"author": "Atom Space",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/atomspace/atomspace-eslint/issues"
+	},
+	"homepage": "https://github.com/atomspace/atomspace-eslint#readme",
+	"dependencies": {
+		"@babel/preset-react": "^7.0.0",
+		"@neutrinojs/react": "8.3.0",
+		"neutrino-middleware-less-loader": "4.0.0",
+		"react-scoped-styles": "0.2.7",
+		"webpackbar": "3.2.0"
+	},
+	"devDependencies": {
+		"neutrino": "~8.3.0",
+		"@atomspace/eslint": "2.4.0"
+	},
+	"peerDependencies": {
+		"neutrino": "^8.0.0"
+	},
+	"engines": {
+		"node": ">=6.9.0",
+		"npm": ">=3.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"src",
+		"LICENSE",
+		"README.md",
+		"package.json"
+	]
+}
