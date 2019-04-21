@@ -28,11 +28,13 @@
 		"@neutrinojs/react": "8.3.0",
 		"neutrino-middleware-less-loader": "4.0.0",
 		"react-scoped-styles": "0.2.7",
-		"webpackbar": "3.2.0"
+		"webpackbar": "3.2.0",
+		"react-hot-loader": "4.3.4"
 	},
 	"devDependencies": {
-		"neutrino": "~8.3.0",
-		"@atomspace/eslint": "2.4.0"
+		"neutrino": "8.3.0",
+		"@atomspace/eslint": "2.4.0",
+		"webpack": "^3.0.0"
 	},
 	"peerDependencies": {
 		"neutrino": "^8.0.0"

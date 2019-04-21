@@ -1,12 +1,21 @@
+let path = require('path');
+
 let react = require('@neutrinojs/react');
 let WebpackBar = require('webpackbar');
 let less = require('neutrino-middleware-less-loader');
+let { DefinePlugin } = require('webpack');
+
 
 module.exports = function (neutrino, settings) {
+	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
+	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
+	let testRun = (process.env.NODE_ENV === 'test');
+	let devMode = (process.env.NODE_ENV === 'development');
 	let { config } = neutrino;
 	let styleExtensions = /\.(css|scss|sass|less)$/;
 	let jsxExtensions = /\.(jsx|tsx)$/;
 	let appName = `${neutrino.options.packageJson.name} (React)`;
+	let useLauncher = true;
 
 	// Before JS pre-processors
 	config.module
@@ -36,6 +45,46 @@ module.exports = function (neutrino, settings) {
 			}])
 			.end();
 
+
+	config
+		.devtool(devMode ? 'eval-source-map' : 'source-map')
+		.resolve.modules
+			.add(NODE_MODULES)
+			.end().end()
+		.resolveLoader.modules
+			.add(NODE_MODULES)
+			.end().end()
+		.plugin('define-env')
+			.use(DefinePlugin, [{
+				// REMOVE: '__http__': JSON.stringify(protocol)
+			}])
+			.end();
+
+
+	Object.keys(neutrino.options.mains).forEach(function (key) {
+		neutrino.config
+			.entry(key)
+				.when(useLauncher, function (entry) {
+					let values = entry.values();
+					let lastValue = values[values.length - 1];
+
+					entry.delete(lastValue).add(LAUNCHER_PATH);
+				})
+				.end()
+		.resolve.alias
+			.when(useLauncher, function (alias) {
+				// REMOVE: alias.set('__entry__', require.resolve(`${neutrino.options.mains[key]}.jsx`).split('.jsx').shift());
+				alias.set('__entry__', path.resolve(__dirname, neutrino.options.mains[key]));
+			})
+
+			// .when(useLauncher && devMode, function (alias) {
+			// 	alias.set('webpack/hot/log', require.resolve('webpack/hot/log'));
+			// })
+			.end();
+	});
+
+
 	// console.log(JSON.stringify(config.toConfig().module.rules, null, 2));
 	// console.log(config.toConfig().module.rules);
+	// console.log(config.toConfig());
 };
