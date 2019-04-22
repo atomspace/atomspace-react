@@ -3,6 +3,7 @@ let path = require('path');
 let react = require('@neutrinojs/react');
 let WebpackBar = require('webpackbar');
 let less = require('neutrino-middleware-less-loader');
+let CircularDependencyPlugin = require('circular-dependency-plugin');
 let { DefinePlugin } = require('webpack');
 
 
@@ -11,7 +12,7 @@ module.exports = function (neutrino, settings) {
 	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
 	let devMode = (process.env.NODE_ENV === 'development');
 	let { config } = neutrino;
-	let styleExtensions = /\.(css|scss|sass|less)$/;
+	let styleExtensions = /\.(css|scss|sass|less|styl|pcss)$/;
 	let jsxExtensions = /\.(jsx|tsx)$/;
 	let appName = `${neutrino.options.packageJson.name} (React)`;
 	let useLauncher = true;
@@ -60,6 +61,14 @@ module.exports = function (neutrino, settings) {
 		.plugin('define-env')
 			.use(DefinePlugin, [{
 				// REMOVE: '__http__': JSON.stringify(protocol)
+			}])
+			.end()
+		.plugin('depend')
+			.use(CircularDependencyPlugin, [{
+				exclude: /node_modules/,
+				failOnError: false,
+				allowAsyncCycles: true,
+				cwd: process.cwd()
 			}])
 			.end()
 		.module
