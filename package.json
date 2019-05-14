@@ -20,9 +20,9 @@
 	"author": "Atom Space",
 	"license": "GPL-3.0",
 	"bugs": {
-		"url": "https://github.com/atomspace/atomspace-eslint/issues"
+		"url": "https://github.com/atomspace/atomspace-react/issues"
 	},
-	"homepage": "https://github.com/atomspace/atomspace-eslint#readme",
+	"homepage": "https://github.com/atomspace/atomspace-react#readme",
 	"dependencies": {
 		"@babel/preset-react": "^7.0.0",
 		"@neutrinojs/react": "8.3.0",
