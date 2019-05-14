@@ -27,7 +27,7 @@
 		"@babel/preset-react": "^7.0.0",
 		"@neutrinojs/react": "8.3.0",
 		"neutrino-middleware-less-loader": "4.0.0",
-		"react-scoped-styles": "0.2.7",
+		"react-scoped-styles": "0.2.81",
 		"webpackbar": "3.2.0",
 		"react-hot-loader": "4.3.4",
 		"babel-plugin-transform-decorators-legacy": "1.3.5",
