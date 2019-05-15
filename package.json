@@ -37,10 +37,14 @@
 	"devDependencies": {
 		"neutrino": "8.3.0",
 		"@atomspace/eslint": "2.4.0",
-		"webpack": "^3.0.0"
+		"webpack": "^3.0.0",
+		"react": "^16.0.0",
+		"react-dom": "^16.0.0"
 	},
 	"peerDependencies": {
-		"neutrino": "^8.0.0"
+		"neutrino": "^8.0.0",
+		"react": "^16.0.0",
+		"react-dom": "^16.0.0"
 	},
 	"engines": {
 		"node": ">=6.9.0",

@@ -7,7 +7,7 @@ let CircularDependencyPlugin = require('circular-dependency-plugin');
 let { DefinePlugin } = require('webpack');
 
 
-module.exports = function (neutrino, settings) {
+module.exports = function (neutrino, settings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
 	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
 	let devMode = (process.env.NODE_ENV === 'development');
@@ -27,7 +27,8 @@ module.exports = function (neutrino, settings) {
 	neutrino.use(react, {
 		html: {
 			title: appName
-		}
+		},
+		...settings
 	});
 
 	// Before CSS pre-processors
