@@ -1,21 +1,58 @@
 let path = require('path');
 
+let deepmerge = require('deepmerge');
 let react = require('@neutrinojs/react');
 let WebpackBar = require('webpackbar');
 let less = require('neutrino-middleware-less-loader');
 let CircularDependencyPlugin = require('circular-dependency-plugin');
-let { DefinePlugin } = require('webpack');
 
-
-module.exports = function (neutrino, settings = {}) {
+module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
 	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
 	let devMode = (process.env.NODE_ENV === 'development');
 	let { config } = neutrino;
 	let styleExtensions = /\.(css|scss|sass|less|styl|pcss)$/;
 	let jsxExtensions = /\.(jsx|tsx)$/;
-	let appName = `${neutrino.options.packageJson.name} (React)`;
-	let useLauncher = true;
+	let appName = neutrino.options.packageJson.name;
+	let defaultSettings = {
+		launcher: true,
+		browsers: customSettings.browsers ? [] : [
+			'last 2 Chrome versions',
+			'last 2 Firefox versions',
+			'last 2 Edge versions',
+			'last 2 Opera versions',
+			'last 2 Safari versions',
+			'last 2 iOS versions'
+		],
+		title: appName, // Example: change the page title
+		polyfills: true,
+		server: {
+			port: 3000,
+			host: 'localhost'
+		}
+	};
+	let settings = deepmerge(defaultSettings, customSettings);
+	let useLauncher = Boolean(settings.launcher);
+	let scopedStylesSettings = {
+		globalsPrefix: 'app'
+	};
+	let reactSettings = {
+		hot: true,
+		devServer: {
+			hot: true,
+			port: settings.server.port,
+			host: settings.server.host
+		},
+		polyfills: {
+			async: settings.polyfills
+		},
+		html: {
+			title: settings.title
+		},
+		targets: {
+			browsers: settings.browsers
+		}
+	};
 
 	// Before JS pre-processors
 	config.module
@@ -25,14 +62,10 @@ module.exports = function (neutrino, settings = {}) {
 				.end()
 			.test(jsxExtensions)
 			.use('react-scoped-styles')
-				.loader(require.resolve('react-scoped-styles/script-loader'));
+				.loader(require.resolve('react-scoped-styles/script-loader'))
+				.options(scopedStylesSettings);
 
-	neutrino.use(react, {
-		html: {
-			title: appName
-		},
-		...settings
-	});
+	neutrino.use(react, reactSettings);
 
 	// Before CSS pre-processors
 	config.module
@@ -43,6 +76,7 @@ module.exports = function (neutrino, settings = {}) {
 			.test(styleExtensions)
 			.use('react-scoped-styles')
 				.loader(require.resolve('react-scoped-styles/style-loader'))
+				.options(scopedStylesSettings)
 				.end();
 
 	neutrino.use(less);
@@ -57,17 +91,12 @@ module.exports = function (neutrino, settings = {}) {
 			.end().end()
 		.plugin('progress')
 			.use(WebpackBar, [{
-				name: appName,
+				name: `${appName} (React)`,
 				color: 'green',
 				profile: false
 
 				// fancy: true // true when not in CI or testing mode
 				// basic: true // true when running in minimal environments.
-			}])
-			.end()
-		.plugin('define-env')
-			.use(DefinePlugin, [{
-				// REMOVE: '__http__': JSON.stringify(protocol)
 			}])
 			.end()
 		.plugin('depend')
@@ -81,16 +110,29 @@ module.exports = function (neutrino, settings = {}) {
 		.module
 			.rule('compile')
 				.use('babel')
-				.tap(function (options) {
-					options.plugins.unshift(
-						require.resolve('babel-plugin-transform-decorators-legacy'),
-						require.resolve('babel-plugin-transform-class-properties')
-					);
+					.tap(function (options) {
+						options.plugins.unshift(
+							require.resolve('babel-plugin-transform-decorators-legacy'),
+							require.resolve('babel-plugin-transform-class-properties'),
+							[require.resolve('babel-plugin-transform-class-properties'), {
+								root: neutrino.options.source,
+								attrs: ['img:src', 'link:href']
+							}]
+						);
 
-					return options;
-				})
+						return options;
+					})
+					.end()
 				.end()
-			.end();
+			.when(devMode, function (module) {
+				module.rule('source-map')
+					.test(/\.js$/i)
+					.pre()
+					.use('smart-source-map')
+						.loader(require.resolve('smart-source-map-loader'))
+						.end()
+					.end();
+			});
 
 	Object.keys(neutrino.options.mains).forEach(function (key) {
 		neutrino.config
@@ -106,10 +148,6 @@ module.exports = function (neutrino, settings = {}) {
 			.when(useLauncher, function (alias) {
 				alias.set('__entry__', path.resolve(__dirname, neutrino.options.mains[key]));
 			})
-
-			// .when(useLauncher && devMode, function (alias) {
-			// 	alias.set('webpack/hot/log', require.resolve('webpack/hot/log'));
-			// })
 			.end();
 	});
 
