@@ -1,6 +1,6 @@
 {
 	"name": "@atomspace/react",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"description": "Neutrino preset for creating a React project",
 	"main": "src/index.js",
 	"scripts": {
@@ -24,7 +24,6 @@
 	},
 	"homepage": "https://github.com/atomspace/atomspace-react#readme",
 	"dependencies": {
-		"@babel/preset-react": "^7.0.0",
 		"@neutrinojs/react": "8.3.0",
 		"neutrino-middleware-less-loader": "4.0.0",
 		"react-scoped-styles": "0.2.81",
@@ -40,7 +39,7 @@
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",
-		"@atomspace/eslint": "2.4.0",
+		"@atomspace/eslint": "2.5.3",
 		"webpack": "^3.0.0",
 		"react": "^16.0.0",
 		"react-dom": "^16.0.0"
