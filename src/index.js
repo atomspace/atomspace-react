@@ -116,7 +116,8 @@ module.exports = function (neutrino, customSettings = {}) {
 					.tap(function (options) {
 						options.plugins.unshift(
 							require.resolve('babel-plugin-transform-decorators-legacy'),
-							[require.resolve('babel-plugin-transform-class-properties'), {
+							require.resolve('babel-plugin-transform-class-properties'),
+							[require.resolve('babel-plugin-transform-jsx-url'), {
 								root: neutrino.options.source,
 								attrs: ['img:src', 'link:href']
 							}]
