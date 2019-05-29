@@ -6,6 +6,8 @@ let WebpackBar = require('webpackbar');
 let less = require('neutrino-middleware-less-loader');
 let CircularDependencyPlugin = require('circular-dependency-plugin');
 
+let svg = require('./loaders/svg');
+
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
 	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
@@ -80,6 +82,7 @@ module.exports = function (neutrino, customSettings = {}) {
 				.end();
 
 	neutrino.use(less);
+	neutrino.use(svg);
 
 	config
 		.devtool(devMode ? 'eval-source-map' : 'source-map')
@@ -113,7 +116,6 @@ module.exports = function (neutrino, customSettings = {}) {
 					.tap(function (options) {
 						options.plugins.unshift(
 							require.resolve('babel-plugin-transform-decorators-legacy'),
-							require.resolve('babel-plugin-transform-class-properties'),
 							[require.resolve('babel-plugin-transform-class-properties'), {
 								root: neutrino.options.source,
 								attrs: ['img:src', 'link:href']
