@@ -59,10 +59,10 @@ module.exports = function (neutrino, customSettings = {}) {
 	// Before JS pre-processors
 	config.module
 		.rule('scoped-jsx')
+			.test(jsxExtensions)
 			.include
 				.merge([neutrino.options.source, neutrino.options.tests])
 				.end()
-			.test(jsxExtensions)
 			.use('react-scoped-styles')
 				.loader(require.resolve('react-scoped-styles/script-loader'))
 				.options(scopedStylesSettings);
@@ -72,10 +72,11 @@ module.exports = function (neutrino, customSettings = {}) {
 	// Before CSS pre-processors
 	config.module
 		.rule('scoped-style')
+			.test(styleExtensions)
 			.include
 				.merge([neutrino.options.source, neutrino.options.tests])
 				.end()
-			.test(styleExtensions)
+			.set('issuer', jsxExtensions)
 			.use('react-scoped-styles')
 				.loader(require.resolve('react-scoped-styles/style-loader'))
 				.options(scopedStylesSettings)
