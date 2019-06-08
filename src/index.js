@@ -120,7 +120,7 @@ module.exports = function (neutrino, customSettings = {}) {
 							require.resolve('babel-plugin-transform-class-properties'),
 							[require.resolve('babel-plugin-transform-jsx-url'), {
 								root: neutrino.options.source,
-								attrs: ['img:src', 'link:href']
+								attrs: ['img:src', 'link:href', 'Image:src']
 							}]
 						);
 
