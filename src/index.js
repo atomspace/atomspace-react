@@ -15,16 +15,18 @@ module.exports = function (neutrino, customSettings = {}) {
 	let { config } = neutrino;
 	let styleExtensions = /\.(css|scss|sass|less|styl|pcss)$/;
 	let jsxExtensions = /\.(jsx|tsx)$/;
-	let appName = neutrino.options.packageJson.name;
+	let { name, version } = neutrino.options.packageJson;
+	let appName = `${name} ${version}`;
 	let defaultSettings = {
 		launcher: true,
 		browsers: customSettings.browsers ? [] : [
-			'last 2 Chrome versions',
-			'last 2 Firefox versions',
-			'last 2 Edge versions',
-			'last 2 Opera versions',
-			'last 2 Safari versions',
-			'last 2 iOS versions'
+			'last 2 Chrome major versions',
+			'last 2 Firefox major versions',
+			'last 2 Edge major versions',
+			'last 2 Opera major versions',
+			'last 2 Safari major versions',
+			'last 2 iOS major versions',
+			'IE 11'
 		],
 		title: appName, // Example: change the page title
 		polyfills: true,
