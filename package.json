@@ -35,7 +35,9 @@
 		"smart-source-map-loader": "1.0.0",
 		"deepmerge": "3.2.0",
 		"babel-plugin-transform-jsx-url": "1.0.2",
-		"svg-url-loader": "2.3.2"
+		"svg-url-loader": "2.3.2",
+		"mdx-loader": "2.2.1",
+		"arrify": "2.0.1"
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",

@@ -7,6 +7,7 @@ let less = require('neutrino-middleware-less-loader');
 let CircularDependencyPlugin = require('circular-dependency-plugin');
 
 let svg = require('./loaders/svg');
+let mdx = require('./loaders/mdx');
 
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
@@ -28,7 +29,7 @@ module.exports = function (neutrino, customSettings = {}) {
 			'last 2 iOS major versions',
 			'IE 11'
 		],
-		title: appName, // Example: change the page title
+		title: appName,
 		polyfills: true,
 		server: {
 			port: 3000,
@@ -86,6 +87,7 @@ module.exports = function (neutrino, customSettings = {}) {
 
 	neutrino.use(less);
 	neutrino.use(svg);
+	neutrino.use(mdx);
 
 	config
 		.devtool(devMode ? 'eval-source-map' : 'source-map')

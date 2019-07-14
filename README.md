@@ -19,6 +19,7 @@
 - Resolve URLs in JSX like in HTML for such elements: `img[src]`, `link[href]`, `Image[src]`
 - Consume external dependencies sourcemaps for better debugging during development
 - CSS classes isolation using [`react-scoped-styles`](https://www.npmjs.com/package/react-scoped-styles)
+- [MDX](https://mdxjs.com/) support
 - User-friendly building progress bar
 - Tree-shaking to create smaller bundles
 - Production-optimized bundles with minification and source maps
