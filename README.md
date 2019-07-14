@@ -25,9 +25,9 @@
 - Production-optimized bundles with minification and source maps
 - Detect and warn about circular dependencies during build time
 - Extensible to customize your project as needed
+- Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
 <!-- - Webpack Dev Server during development on "localhost" and local network IP for external devices access -->
 <!-- - Automatically discovers free HTTP port to run a server locally -->
-<!-- - Chunking of external dependencies apart from application code -->
 
 ## Requirements
 

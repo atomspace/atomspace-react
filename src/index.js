@@ -8,6 +8,7 @@ let CircularDependencyPlugin = require('circular-dependency-plugin');
 
 let svg = require('./loaders/svg');
 let mdx = require('./loaders/mdx');
+let vendorChunks = require('./plugins/vendor-chunks');
 
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
@@ -27,7 +28,7 @@ module.exports = function (neutrino, customSettings = {}) {
 			'last 2 Opera major versions',
 			'last 2 Safari major versions',
 			'last 2 iOS major versions',
-			'IE 11'
+			'ie 11'
 		],
 		title: appName,
 		polyfills: true,
@@ -88,6 +89,7 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(less);
 	neutrino.use(svg);
 	neutrino.use(mdx);
+	neutrino.use(vendorChunks);
 
 	config
 		.devtool(devMode ? 'eval-source-map' : 'source-map')
@@ -124,7 +126,7 @@ module.exports = function (neutrino, customSettings = {}) {
 							require.resolve('babel-plugin-transform-class-properties'),
 							[require.resolve('babel-plugin-transform-jsx-url'), {
 								root: neutrino.options.source,
-								attrs: ['img:src', 'link:href', 'Image:src']
+								attrs: ['img:src', 'link:href', 'Image:src', 'video:src', 'Video:src', 'audio:src']
 							}]
 						);
 
