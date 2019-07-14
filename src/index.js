@@ -145,6 +145,18 @@ module.exports = function (neutrino, customSettings = {}) {
 						.loader(require.resolve('smart-source-map-loader'))
 						.end()
 					.end();
+
+				module.rule('compile')
+					.use('babel')
+						.tap(function (options) {
+							options.plugins.push(
+								require.resolve('babel-plugin-transform-react-jsx-source')
+							);
+
+							return options;
+						})
+						.end()
+					.end();
 			});
 
 	Object.keys(neutrino.options.mains).forEach(function (key) {
