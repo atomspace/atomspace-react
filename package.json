@@ -42,7 +42,7 @@
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",
-		"@atomspace/eslint": "3.0.0"
+		"@atomspace/eslint": "3.0.1"
 	},
 	"peerDependencies": {
 		"webpack": "^3.0.0",

@@ -21,7 +21,7 @@ function renderEntry () {
 }
 
 if (module.hot) {
-	require('webpack/hot/log').setLogLevel('none'); // eslint-disable-line import/no-extraneous-dependencies
+	require('webpack/hot/log').setLogLevel('none');
 	module.hot.accept('__entry__', function () {
 		console.clear(); // eslint-disable-line no-console
 		renderEntry();
