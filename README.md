@@ -127,7 +127,7 @@ module.exports = {
          launcher: true,
 
          // Document title
-         title: `${name} ${version}`,
+         title: `${packageJson.name} ${packageJson.version}`,
 
          // options related to a development server
          server: {
