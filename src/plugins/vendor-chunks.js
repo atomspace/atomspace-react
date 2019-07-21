@@ -16,7 +16,7 @@ module.exports = function ({ config }) {
 			.use(CommonsChunkPlugin, [{
 				name: 'vendor',
 				minChunks (module) {
-					if (module.resource && (/^.*\.(css|scss|sass|less|styl)$/).test(module.resource)) {
+					if (module.resource && (/^.*\.(css|scss|sass|less|styl|pcss)$/).test(module.resource)) {
 						return false;
 					}
 					return module.context && module.context.includes('node_modules');

@@ -38,11 +38,12 @@
 		"svg-url-loader": "2.3.2",
 		"mdx-loader": "2.2.1",
 		"arrify": "2.0.1",
-		"babel-plugin-transform-react-jsx-source": "6.22.0"
+		"babel-plugin-transform-react-jsx-source": "6.22.0",
+		"babel-plugin-smart-webpack-import": "1.4.6"
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",
-		"@atomspace/eslint": "3.0.1"
+		"@atomspace/eslint": "3.1.0"
 	},
 	"peerDependencies": {
 		"webpack": "^3.0.0",

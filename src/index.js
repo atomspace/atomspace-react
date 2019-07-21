@@ -5,6 +5,7 @@ let react = require('@neutrinojs/react');
 let WebpackBar = require('webpackbar');
 let less = require('neutrino-middleware-less-loader');
 let CircularDependencyPlugin = require('circular-dependency-plugin');
+let { shouldPrintComment } = require('babel-plugin-smart-webpack-import');
 
 let svg = require('./loaders/svg');
 let mdx = require('./loaders/mdx');
@@ -127,8 +128,10 @@ module.exports = function (neutrino, customSettings = {}) {
 							[require.resolve('babel-plugin-transform-jsx-url'), {
 								root: neutrino.options.source,
 								attrs: ['img:src', 'link:href', 'Image:src', 'video:src', 'Video:src', 'audio:src']
-							}]
+							}],
+							require.resolve('babel-plugin-smart-webpack-import')
 						);
+						options.shouldPrintComment = shouldPrintComment;
 
 						return options;
 					})
