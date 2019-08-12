@@ -1,4 +1,5 @@
 let path = require('path');
+let fs = require('fs');
 
 let deepmerge = require('deepmerge');
 let react = require('@neutrinojs/react');
@@ -11,9 +12,12 @@ let svg = require('./loaders/svg');
 let mdx = require('./loaders/mdx');
 let vendorChunks = require('./plugins/vendor-chunks');
 
+// console.log(process.env)
+
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
 	const LAUNCHER_PATH = path.resolve(__dirname, './launcher.js');
+	const FAVICON_PATH = path.resolve(neutrino.options.source, 'favicon.ico');
 	let devMode = (process.env.NODE_ENV === 'development');
 	let { config } = neutrino;
 	let styleExtensions = /\.(css|scss|sass|less|styl|pcss)$/;
@@ -38,8 +42,8 @@ module.exports = function (neutrino, customSettings = {}) {
 			host: 'localhost'
 		}
 	};
+	let faviconExists = fs.existsSync(FAVICON_PATH);
 	let settings = deepmerge(defaultSettings, customSettings);
-	let useLauncher = Boolean(settings.launcher);
 	let scopedStylesSettings = {
 		globalsPrefix: 'app'
 	};
@@ -54,12 +58,14 @@ module.exports = function (neutrino, customSettings = {}) {
 			async: settings.polyfills
 		},
 		html: {
-			title: settings.title
+			title: settings.title,
+			favicon: faviconExists ? FAVICON_PATH : ''
 		},
 		targets: {
 			browsers: settings.browsers
 		}
 	};
+	let useLauncher = Boolean(settings.launcher);
 
 	// Before JS pre-processors
 	config.module

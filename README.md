@@ -26,6 +26,7 @@
 - Detect and warn about circular dependencies during build time
 - Extensible to customize your project as needed
 - Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
+- Favicon injection
 <!-- - Webpack Dev Server during development on "localhost" and local network IP for external devices access -->
 <!-- - Automatically discovers free HTTP port to run a server locally -->
 
@@ -105,6 +106,10 @@ You can either serve or deploy the contents of this build directory as a static 
 ## Static assets
 
 If you wish to copy files to the build directory that are not imported from application code, you can place them in a directory within `src` called `static`. All files in this directory will be copied from `src/static` to `build/static`.
+
+### Favicon
+
+There is a special case for a favicon. You have to put a `favicon.ico` file in the source code folder. By default it is `src/favicon.ico`. The file name is conventional and can't be changed.
 
 ## Hot Reloading
 
