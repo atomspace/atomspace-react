@@ -27,6 +27,7 @@
 - Extensible to customize your project as needed
 - Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
 - Favicon injection
+- Environment variables are automatically exposed if used
 <!-- - Webpack Dev Server during development on "localhost" and local network IP for external devices access -->
 <!-- - Automatically discovers free HTTP port to run a server locally -->
 
