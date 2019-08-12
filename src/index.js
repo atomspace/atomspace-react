@@ -93,6 +93,9 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(vendorChunks);
 
 	config
+		.output
+			.publicPath('/')
+			.end()
 		.devtool(devMode ? 'eval-source-map' : 'source-map')
 		.resolve.modules
 			.add(NODE_MODULES)
