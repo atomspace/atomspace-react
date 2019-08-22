@@ -74,7 +74,7 @@ module.exports = function (neutrino, customSettings = {}) {
 				.merge([neutrino.options.source, neutrino.options.tests])
 				.end()
 			.use('react-scoped-styles')
-				.loader(require.resolve('react-scoped-styles/script-loader'))
+				.loader(require.resolve('./loaders/scoped-styles/script-loader'))
 				.options(scopedStylesSettings);
 
 	neutrino.use(react, reactSettings);
@@ -88,7 +88,7 @@ module.exports = function (neutrino, customSettings = {}) {
 				.end()
 			.set('issuer', jsxExtensions)
 			.use('react-scoped-styles')
-				.loader(require.resolve('react-scoped-styles/style-loader'))
+				.loader(require.resolve('./loaders/scoped-styles/style-loader'))
 				.options(scopedStylesSettings)
 				.end();
 
