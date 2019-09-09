@@ -1,10 +1,6 @@
 const { CommonsChunkPlugin } = require('webpack').optimize;
 
 module.exports = function ({ config }) {
-	let prodMode = process.env.NODE_ENV === 'production';
-
-	if (!prodMode) return;
-
 	config
 		.plugin('async-chunk')
 			.use(CommonsChunkPlugin, [{
