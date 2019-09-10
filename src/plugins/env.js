@@ -1,4 +1,4 @@
-const { EnvironmentPlugin } = require('webpack');
+let { EnvironmentPlugin } = require('webpack');
 
 module.exports = function ({ config }) {
 	let envVariables = Object.keys(process.env);

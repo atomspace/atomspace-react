@@ -40,7 +40,8 @@
 		"arrify": "2.0.1",
 		"babel-plugin-transform-react-jsx-source": "6.22.0",
 		"babel-plugin-smart-webpack-import": "1.4.6",
-		"css-tree": "1.0.0-alpha.34"
+		"css-tree": "1.0.0-alpha.34",
+		"webpack-bundle-analyzer": "3.4.1"
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",

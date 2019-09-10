@@ -12,6 +12,7 @@ let svg = require('./loaders/svg');
 let mdx = require('./loaders/mdx');
 let vendorChunks = require('./plugins/vendor-chunks');
 let env = require('./plugins/env');
+let bundleAnalyzer = require('./plugins/bundle-analyzer');
 
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
@@ -97,6 +98,7 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(mdx);
 	neutrino.use(vendorChunks);
 	neutrino.use(env);
+	neutrino.use(bundleAnalyzer);
 
 	config
 		.output
