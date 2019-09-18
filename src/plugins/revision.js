@@ -1,16 +1,30 @@
 let GitRevisionPlugin = require('git-revision-webpack-plugin');
 let { DefinePlugin } = require('webpack');
 
-let revisionOptions = {
-	lightweightTags: true,
-	branch: true
-};
-let gitRevisionPlugin = new GitRevisionPlugin(revisionOptions);
-let VERSION = gitRevisionPlugin.version();
-let COMMITHASH = gitRevisionPlugin.commithash();
-let BRANCH = gitRevisionPlugin.branch();
+module.exports = function Revision (neutrino) {
+	let { config, options } = neutrino;
+	let { version } = options.packageJson;
+	let revisionOptions = {
+		lightweightTags: true,
+		branch: true
+	};
+	let VERSION;
+	let COMMITHASH;
+	let BRANCH;
 
-module.exports = function Revision ({ config }) {
+	try {
+		let gitRevisionPlugin = new GitRevisionPlugin(revisionOptions);
+
+		VERSION = gitRevisionPlugin.version();
+		COMMITHASH = gitRevisionPlugin.commithash();
+		BRANCH = gitRevisionPlugin.branch();
+	}
+	catch (err) {
+		VERSION = version;
+		COMMITHASH = '';
+		BRANCH = '';
+	}
+
 	config
 		.plugin('revision')
 			.use(GitRevisionPlugin, [revisionOptions])
