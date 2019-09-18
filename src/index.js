@@ -13,6 +13,7 @@ let mdx = require('./loaders/mdx');
 let vendorChunks = require('./plugins/vendor-chunks');
 let env = require('./plugins/env');
 let bundleAnalyzer = require('./plugins/bundle-analyzer');
+let revision = require('./plugins/revision');
 
 module.exports = function (neutrino, customSettings = {}) {
 	const NODE_MODULES = path.resolve(__dirname, '../node_modules');
@@ -99,6 +100,7 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(vendorChunks);
 	neutrino.use(env);
 	neutrino.use(bundleAnalyzer);
+	neutrino.use(revision);
 
 	config
 		.output

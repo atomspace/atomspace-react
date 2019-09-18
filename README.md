@@ -29,6 +29,7 @@
 - Favicon injection
 - Environment variables are automatically exposed if used
 - Bundle Analyzer for production and development builds
+- Git revision information through environment variables (VERSION, COMMITHASH, BRANCH)
 <!-- - Webpack Dev Server during development on "localhost" and local network IP for external devices access -->
 <!-- - Automatically discovers free HTTP port to run a server locally -->
 
