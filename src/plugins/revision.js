@@ -9,10 +9,10 @@ let branchCommand;
 
 if (inCIEnvironment) {
 	if (duringPR) {
-		branchCommand = `echo ${prBranch}`;
+		branchCommand = `--version | tail -n0 && echo ${prBranch}`;
 	}
 	else if (branch !== tag) {
-		branchCommand = `echo ${branch}`;
+		branchCommand = `--version | tail -n0 && echo ${branch}`;
 	}
 }
 
@@ -40,6 +40,8 @@ module.exports = function Revision (neutrino) {
 		COMMITHASH = '';
 		BRANCH = '';
 	}
+
+	console.log({ BRANCH });
 
 	config
 		.plugin('revision')
