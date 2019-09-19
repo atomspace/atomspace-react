@@ -1,12 +1,28 @@
 let GitRevisionPlugin = require('git-revision-webpack-plugin');
 let { DefinePlugin } = require('webpack');
+let envCi = require('env-ci');
+
+let {
+	isCi: inCIEnvironment, branch, isPr: duringPR, tag, prBranch
+} = envCi();
+let branchCommand;
+
+if (inCIEnvironment) {
+	if (duringPR) {
+		branchCommand = `echo ${prBranch}`;
+	}
+	else if (branch !== tag) {
+		branchCommand = `echo ${branch}`;
+	}
+}
 
 module.exports = function Revision (neutrino) {
 	let { config, options } = neutrino;
 	let { version } = options.packageJson;
 	let revisionOptions = {
 		lightweightTags: true,
-		branch: true
+		branch: true,
+		branchCommand
 	};
 	let VERSION;
 	let COMMITHASH;

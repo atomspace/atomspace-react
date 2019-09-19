@@ -42,11 +42,12 @@
 		"babel-plugin-smart-webpack-import": "1.4.6",
 		"css-tree": "1.0.0-alpha.34",
 		"webpack-bundle-analyzer": "3.4.1",
-		"git-revision-webpack-plugin": "2.5.1"
+		"git-revision-webpack-plugin": "2.5.1",
+		"env-ci": "4.1.1"
 	},
 	"devDependencies": {
 		"neutrino": "8.3.0",
-		"@atomspace/eslint": "3.1.0"
+		"@atomspace/eslint": "3.1.1"
 	},
 	"peerDependencies": {
 		"webpack": "^3.0.0",
