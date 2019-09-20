@@ -41,8 +41,6 @@ module.exports = function Revision (neutrino) {
 		BRANCH = '';
 	}
 
-	console.log({ BRANCH });
-
 	config
 		.plugin('revision')
 			.use(GitRevisionPlugin, [revisionOptions])
