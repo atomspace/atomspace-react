@@ -2,7 +2,7 @@
 
 let { CommonsChunkPlugin } = require('webpack').optimize;
 
-module.exports = function ({ config }) {
+module.exports = function (neutrino) {
 	function isVendorModule (module) {
 		if (module.resource && (/^.*\.(css|scss|sass|less|styl|pcss)$/).test(module.resource)) {
 			return false;
@@ -10,11 +10,18 @@ module.exports = function ({ config }) {
 		return module.context && module.context.includes('node_modules');
 	}
 
-	config
+	neutrino.config
 		.plugin('vendor-chunk')
 			.use(CommonsChunkPlugin, [{
 				name: 'vendor',
-				minChunks: isVendorModule
+				minChunks: isVendorModule,
+				chunks: Object.keys(neutrino.options.mains)
+			}])
+			.end()
+		.plugin('runtime-chunk')
+			.use(CommonsChunkPlugin, [{
+				name: 'runtime',
+				chunks: Object.keys(neutrino.options.mains).concat(['vendor'])
 			}])
 			.end()
 		.plugin('common-chunk')

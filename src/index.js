@@ -48,6 +48,7 @@ module.exports = function (neutrino, customSettings = {}) {
 	let scopedStylesSettings = {
 		globalsPrefix: 'app'
 	};
+	let chunkOrder = ['polyfills', 'runtime', 'vendor'];
 	let reactSettings = {
 		hot: true,
 		devServer: {
@@ -60,7 +61,20 @@ module.exports = function (neutrino, customSettings = {}) {
 		},
 		html: {
 			title: settings.title,
-			favicon: faviconExists ? FAVICON_PATH : ''
+			favicon: faviconExists ? FAVICON_PATH : '',
+			chunks: ['polyfills'],
+			chunksSortMode (chunkA, chunkB) {
+				let indexA = chunkOrder.indexOf(chunkA.names[0]);
+				let indexB = chunkOrder.indexOf(chunkB.names[0]);
+
+				if (indexA < 0) {
+					return 1;
+				}
+				if (indexB < 0) {
+					return -1;
+				}
+				return indexA - indexB;
+			}
 		},
 		targets: {
 			browsers: settings.browsers
@@ -103,10 +117,18 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(revision);
 
 	config
+		.entry('polyfills')
+			.add(require.resolve('./polyfills.js'))
+			.end()
 		.output
 			.publicPath('/')
 			.end()
 		.devtool(devMode ? 'eval-source-map' : 'source-map')
+		.resolve.alias
+
+			// Make sure 2 versions of "core-js" always match in package.json and babel-polyfill/package.json
+			.set('core-js', path.dirname(require.resolve('core-js')))
+			.end().end()
 		.resolve.modules
 			.add(NODE_MODULES)
 			.end().end()
@@ -133,6 +155,9 @@ module.exports = function (neutrino, customSettings = {}) {
 			.end()
 		.module
 			.rule('compile')
+				.include
+					.add(require.resolve('./polyfills.js'))
+					.end()
 				.use('babel')
 					.tap(function (options) {
 						options.plugins.unshift(
@@ -185,13 +210,12 @@ module.exports = function (neutrino, customSettings = {}) {
 					entry.delete(lastValue).add(LAUNCHER_PATH);
 				})
 				.end()
-		.resolve.alias
-			.when(useLauncher, function (alias) {
-				alias.set('__entry__', path.resolve(__dirname, neutrino.options.mains[key]));
-			})
-			.end();
+			.resolve.alias
+				.when(useLauncher, function (alias) {
+					alias.set('__entry__', path.resolve(__dirname, neutrino.options.mains[key]));
+				})
+				.end();
 	});
-
 
 	// console.log(JSON.stringify(config.toConfig().module.rules, null, 2));
 	// console.log(config.toConfig().module.rules);
