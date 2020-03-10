@@ -37,7 +37,7 @@ module.exports = function (neutrino, customSettings = {}) {
 			'ie 11'
 		],
 		title: appName,
-		polyfills: true,
+		polyfills: false,
 		server: {
 			port: 3000,
 			host: 'localhost'
@@ -117,9 +117,11 @@ module.exports = function (neutrino, customSettings = {}) {
 	neutrino.use(revision);
 
 	config
-		.entry('polyfills')
-			.add(require.resolve('./polyfills.js'))
-			.end()
+		.when(settings.polyfills, function (neutrinoConfig) {
+			return neutrinoConfig
+				.entry('polyfills')
+					.add(require.resolve('./polyfills.js'));
+		})
 		.output
 			.publicPath('/')
 			.end()
@@ -137,7 +139,7 @@ module.exports = function (neutrino, customSettings = {}) {
 			.end().end()
 		.plugin('progress')
 			.use(WebpackBar, [{
-				name: `${appName} (React)`,
+				name: settings.title,
 				color: 'green',
 				profile: false
 

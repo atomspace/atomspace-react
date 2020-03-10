@@ -147,7 +147,7 @@ module.exports = {
          },
 
          // Add polyfills necessary for required browsers in Browserlist
-         polyfills: true,
+         polyfills: false,
 
          // supported browsers in a Browserlist format
          browsers: [
