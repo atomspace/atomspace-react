@@ -193,6 +193,42 @@ To override the build configuration, start with the documentation on [customizat
 `@atomspace/react` creates some conventions to make overriding the configuration easier once you are ready to make changes. Following the customization guide and knowing the rule, loader, and plugin IDs,
 you can override and augment the build by providing a function to your `.neutrinorc.js` use array. You can also make these changes from the Neutrino API in a custom middleware.
 
+## Troubleshooting
+
+### Memory limit
+
+Quite often during the production build of large projects there is not enough memory for the NodeJS process. 
+
+```bash
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+```
+
+To resolve this you should increase the limit using CLI flags
+
+```json
+{
+  "scripts": {
+    "build": "node --max-old-space-size=8192 node_modules/neutrino/bin/neutrino.js build"
+  }
+}
+```
+
+### Local builds
+
+By default the project is built with settings optimized for Browser History API. It can't properly run in the File System using `file://` protocol. To make it run locally with double click on `index.html` you can add custom middleware to **.neutrinorc.js** file that overrides some settings
+
+```js
+module.exports = {
+   use: [
+      '@atomspace/react',
+      function ({ config }) {
+         // necessary for correct work on local File System
+         config.output.publicPath('./');
+      }
+   ]
+};
+```
+
 ## VSCode tips
 
 These are suggested workspace settings:
