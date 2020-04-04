@@ -4,8 +4,9 @@
 	"description": "Neutrino preset for creating a React project",
 	"main": "src/index.js",
 	"scripts": {
-		"pretest": "neutrino lint",
-		"lint": "neutrino lint --fix"
+		"eslint": "eslint ./ --ext .js,.jsx,.html,.md",
+		"pretest": "npm run eslint -- --max-warnings 0",
+		"lint": "npm run eslint -- --fix"
 	},
 	"repository": {
 		"type": "git",
@@ -24,42 +25,45 @@
 	},
 	"homepage": "https://github.com/atomspace/atomspace-react#readme",
 	"dependencies": {
-		"@neutrinojs/react": "8.3.0",
-		"neutrino-middleware-less-loader": "4.0.0",
+		"@constgen/neutrino-env": "1.0.0",
+		"@constgen/neutrino-mdx-loader": "1.0.0",
+		"@constgen/neutrino-static-files": "1.0.0",
+		"@constgen/neutrino-revision": "1.0.0",
+		"@constgen/neutrino-dependency": "1.0.0",
+		"@constgen/neutrino-progress": "1.0.0",
+		"@constgen/neutrino-svg-loader": "1.0.0",
+		"@constgen/neutrino-image-loader": "1.0.0",
+		"@constgen/neutrino-react-loader": "1.0.0",
+		"@constgen/neutrino-analysis": "1.0.0",
+		"@constgen/neutrino-react-launcher": "1.0.0",
+		"@neutrinojs/clean": "9.1.0",
+		"@neutrinojs/web": "9.1.0",
+		"@types/react": "16.9.23",
+		"console-clear": "^1.1.1",
+		"css-tree": "1.0.0-alpha.39",
+		"deepmerge": "4.2.2",
+		"neutrino-middleware-less-loader": "5.0.0",
 		"react-scoped-styles": "0.2.81",
-		"webpackbar": "3.2.0",
-		"react-hot-loader": "4.3.4",
-		"babel-plugin-transform-decorators-legacy": "1.3.5",
-		"babel-plugin-transform-class-properties": "6.24.1",
-		"circular-dependency-plugin": "4.4.0",
-		"smart-source-map-loader": "1.0.0",
-		"deepmerge": "3.2.0",
-		"babel-plugin-transform-jsx-url": "1.0.2",
-		"svg-url-loader": "2.3.2",
-		"mdx-loader": "2.2.1",
-		"arrify": "2.0.1",
-		"babel-plugin-transform-react-jsx-source": "6.22.0",
-		"babel-plugin-smart-webpack-import": "1.4.6",
-		"css-tree": "1.0.0-alpha.34",
-		"webpack-bundle-analyzer": "3.4.1",
-		"git-revision-webpack-plugin": "2.5.1",
-		"env-ci": "4.1.1",
-		"babel-polyfill": "6.26.0",
-		"core-js": "2.5.7"
+		"smart-source-map-loader": "1.1.0",
+		"webpack-dev-server-waitpage": "1.0.0"
 	},
 	"devDependencies": {
-		"neutrino": "8.3.0",
-		"@atomspace/eslint": "3.1.1"
+		"@atomspace/eslint": "4.1.0",
+		"eslint": "6.8.0",
+		"neutrino": "^9.1.0",
+		"webpack": "^4.0.0",
+		"webpack-dev-server": "^3.10.3"
 	},
 	"peerDependencies": {
-		"webpack": "^3.0.0",
-		"neutrino": "^8.0.0",
-		"react": "^16.0.0",
-		"react-dom": "^16.0.0"
+		"neutrino": "^9.0.0",
+		"webpack": "^4.0.0",
+		"webpack-dev-server": "^3.0.0",
+		"react": "^16.10.0",
+		"react-dom": "^16.10.0"
 	},
 	"engines": {
-		"node": ">=6.9.0",
-		"npm": ">=3.0.0"
+		"node": ">=10",
+		"npm": ">=5.4.0"
 	},
 	"publishConfig": {
 		"access": "public"

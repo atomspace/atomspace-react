@@ -1,6 +1,7 @@
+os: linux
 language: node_js
 node_js:
-  - "8.0"
+  - "10"
 install:
   - npm install
 cache:
@@ -10,14 +11,14 @@ script:
   - npm test
 notifications:
   email:
-    on_pull_requests: false
     on_success: change
     on_failure: change
 deploy:
+  edge: true
   provider: npm
-  email: "$NPM_EMAIL"
-  api_key: "$NPM_TOKEN"
-  skip_cleanup: false
+  api_token: "$NPM_TOKEN"
+  cleanup: true
+  access: public
   on:
     tags: true
     branch: master

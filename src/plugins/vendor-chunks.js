@@ -18,12 +18,13 @@ module.exports = function (neutrino) {
 				chunks: Object.keys(neutrino.options.mains)
 			}])
 			.end()
-		.plugin('runtime-chunk')
-			.use(CommonsChunkPlugin, [{
-				name: 'runtime',
-				chunks: Object.keys(neutrino.options.mains).concat(['vendor'])
-			}])
-			.end()
+
+		// .plugin('runtime-chunk')
+		// 	.use(CommonsChunkPlugin, [{
+		// 		name: 'runtime',
+		// 		chunks: Object.keys(neutrino.options.mains).concat(['vendor'])
+		// 	}])
+		// 	.end()
 		.plugin('common-chunk')
 			.use(CommonsChunkPlugin, [{
 				children: true,

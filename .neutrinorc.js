@@ -1,12 +1,11 @@
+let atomspaceEslint = require('@atomspace/eslint')
+
 module.exports = {
-	use: [
-		['@atomspace/eslint', {
-			eslint: {
-				env: {
-					node: true,
-					browser: true
-				}
-			}
-		}]
-	]
+   use: [
+      atomspaceEslint({
+         eslint: {
+				env: {node: true}
+         }
+      })
+   ]
 }

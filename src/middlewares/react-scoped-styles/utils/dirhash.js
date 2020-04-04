@@ -1,7 +1,7 @@
 const path = require('path');
 const crypto = require('crypto');
 
-exports.createDirHash = function createDirHash (filePath) {
+module.exports.createDirHash = function createDirHash (filePath) {
 	const LENGTH = 10;
 	const { dir: dirPath, name: dirName } = path.parse(filePath);
 	const dirHash = crypto
