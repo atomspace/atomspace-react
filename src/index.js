@@ -23,7 +23,7 @@ let optimization = require('./middlewares/optimization');
 let mode = require('./middlewares/mode');
 let sourcemap = require('./middlewares/sourcemap');
 let open = require('./middlewares/open');
-let { reactScopedComponent, reactScopedStyle } = require('./middlewares/react-scoped-styles');
+let reactScopedStyles = require('./middlewares/react-scoped-styles');
 
 module.exports = function (customSettings = {}) {
 	return function (neutrino) {
@@ -95,14 +95,9 @@ module.exports = function (customSettings = {}) {
 				.end();
 		neutrino.use(mode());
 
-		// Before JS pre-processors
-		neutrino.use(reactScopedComponent());
-
 		neutrino.use(web(webSettings));
 		neutrino.use(react(reactSettings));
-
-		// Before CSS pre-processors
-		neutrino.use(reactScopedStyle());
+		neutrino.use(reactScopedStyles());
 
 		if (settings.launcher) neutrino.use(reactLauncher());
 		neutrino.use(clean());
