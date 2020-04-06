@@ -15,15 +15,14 @@ let mdx = require('@constgen/neutrino-mdx-loader');
 let analysis = require('@constgen/neutrino-analysis');
 let env = require('@constgen/neutrino-env');
 let reactLauncher = require('@constgen/neutrino-react-launcher');
-let clear = require('console-clear');
+let mode = require('@constgen/neutrino-mode');
+let sourcemap = require('@constgen/neutrino-sourcemap');
+let reactScopedStyles = require('@constgen/neutrino-react-scoped-styles');
 
 let clean = require('./middlewares/clean');
 let eslint = require('./middlewares/eslint');
 let optimization = require('./middlewares/optimization');
-let mode = require('./middlewares/mode');
-let sourcemap = require('./middlewares/sourcemap');
 let open = require('./middlewares/open');
-let reactScopedStyles = require('./middlewares/react-scoped-styles');
 
 module.exports = function (customSettings = {}) {
 	return function (neutrino) {
@@ -66,13 +65,6 @@ module.exports = function (customSettings = {}) {
 				serveIndex: true,
 				useLocalIp: settings.server.public,
 				quiet: false,
-
-				// stats: 'minimal'
-				stats: {
-					all: false,
-					errors: true,
-					warnings: true
-				},
 				noInfo: false
 			},
 			html: {
@@ -85,20 +77,10 @@ module.exports = function (customSettings = {}) {
 			polyfills: settings.polyfills
 		};
 
-		clear();
-		neutrino.config
-			.name(settings.title)
-			.node
-				.set('Buffer', false)
-				.set('process', false)
-				.set('setImmediate', true)
-				.end();
 		neutrino.use(mode());
-
 		neutrino.use(web(webSettings));
 		neutrino.use(react(reactSettings));
 		neutrino.use(reactScopedStyles());
-
 		if (settings.launcher) neutrino.use(reactLauncher());
 		neutrino.use(clean());
 		neutrino.use(image());
@@ -113,7 +95,52 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(env());
 		neutrino.use(analysis());
 		neutrino.use(open({ open: settings.open, title: settings.title }));
-		neutrino.use(optimization()); // TODO:
+		neutrino.use(optimization());
 		neutrino.use(eslint());
+
+		let devMode = neutrino.config.get('mode') === 'development';
+
+		neutrino.config
+			.name(settings.title)
+			.node
+				.set('Buffer', false)
+				.set('process', false)
+				.set('setImmediate', true)
+				.end()
+			.output
+				.filename('compiled/[name].[contenthash:8].js')
+				.when(devMode, function (output) {
+					output.filename('[name].js');
+				})
+				.end()
+			.module
+				.rule('font')
+					.use('file')
+						.tap(options => Object.assign({}, options, {
+							outputPath: 'fonts',
+							name: '[name].[hash:8].[ext]'
+						}))
+						.when(devMode, function (use) {
+							use.tap(options => Object.assign({}, options, {
+								outputPath: undefined,
+								name: '[path][name].[ext]'
+							}));
+						})
+						.end()
+					.end()
+				.end()
+			.when(neutrino.config.plugins.get('extract'), function (config) {
+				config.plugin('extract')
+					.set('args', [{
+						filename: 'compiled/[name].[contenthash:8].css',
+						ignoreOrder: true
+					}])
+					.when(devMode, function (plugin) {
+						plugin.set('args', [{
+							filename: '[name].css'
+						}]);
+					})
+					.end();
+			});
 	};
 };

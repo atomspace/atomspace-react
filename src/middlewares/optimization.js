@@ -2,6 +2,7 @@ let deepmerge = require('deepmerge');
 
 module.exports = function (customSettings = {}) {
 	return function (neutrino) {
+		const MAX_ASSET_SIZE = 2500000;
 		let devMode = neutrino.config.get('mode') === 'development';
 		let prodMode = !devMode;
 		let defaultSettings = {
@@ -11,10 +12,15 @@ module.exports = function (customSettings = {}) {
 		let settings = deepmerge(defaultSettings, customSettings);
 
 		// https://github.com/neutrinojs/neutrino/tree/master/packages/style-minify
+		// https://linguinecode.com/post/reduce-css-file-size-webpack-tree-shaking
 		neutrino.config
+			.performance
+				.maxAssetSize(MAX_ASSET_SIZE)
+				.assetFilter(fileName => fileName.endsWith('.js') || fileName.endsWith('.css'))
+				.end()
 			.optimization
 				.minimize(prodMode)
-				.runtimeChunk({ name: 'runtime' })
+				.runtimeChunk(false)
 				.set('moduleIds', devMode ? 'named' : 'hashed')
 				.set('chunkIds', devMode ? 'named' : 'total-size')
 				.removeAvailableModules(prodMode)
@@ -23,21 +29,26 @@ module.exports = function (customSettings = {}) {
 				.flagIncludedChunks(prodMode)
 				.occurrenceOrder(prodMode)
 				.splitChunks({
-					// chunks: 'async',
-					// chunks: 'all',
-					// maxInitialRequests: Infinity,
-					// maxAsyncRequests: 1,
-					// minSize: 0,
+					chunks: 'all',
+					name: false,
+					maxInitialRequests: 6,
+					maxAsyncRequests: 6,
+					minSize: 30000,
+					maxSize: MAX_ASSET_SIZE,
+					minChunks: 2,
 					cacheGroups: {
-						vendor: {
+						default: false,
+						vendors: {
 							test: /[/\\]node_modules[/\\]/,
 							name: 'vendor',
-							chunks: 'all',
-							priority: -10
+							chunks: 'initial',
+							enforce: true
 						},
-						default: {
+						common: {
+							// idHint: 'common',
+							name: devMode,
+							chunks: 'all',
 							minChunks: 2,
-							priority: -20,
 							reuseExistingChunk: true
 						}
 					}
