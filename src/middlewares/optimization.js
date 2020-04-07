@@ -58,10 +58,15 @@ module.exports = function (customSettings = {}) {
 				})
 				.when(!settings.chunks, function (optimization) {
 					optimization
-						.runtimeChunk(false)
+						.removeAvailableModules(false)
+						.removeEmptyChunks(false)
+						.mergeDuplicateChunks(false)
+						.flagIncludedChunks(false)
+						.occurrenceOrder(false)
 						.splitChunks({
-							default: false,
-							vendors: false
+							minSize: 0,
+							vendors: false,
+							common: false
 						});
 				})
 				.end();
