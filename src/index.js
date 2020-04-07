@@ -94,7 +94,7 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(staticFiles());
 		neutrino.use(env());
 		neutrino.use(analysis());
-		neutrino.use(open({ open: settings.open, title: settings.title }));
+		if (settings.open) neutrino.use(open());
 		neutrino.use(optimization());
 		neutrino.use(eslint());
 

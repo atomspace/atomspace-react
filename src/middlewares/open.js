@@ -1,13 +1,13 @@
 let webpackDevServerWaitpage = require('webpack-dev-server-waitpage');
 
-module.exports = function (serverSettings = {}) {
+module.exports = function () {
 	return function (neutrino) {
 		neutrino.config
 			.devServer.merge({
-				open: serverSettings.open,
+				open: true,
 				before (app, server) {
 					app.use(webpackDevServerWaitpage(server, {
-						title: serverSettings.title,
+						title: neutrino.config.get('name'),
 						theme: 'dark',
 						disableWhenValid: true
 					}));
