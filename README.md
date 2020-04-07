@@ -169,7 +169,7 @@ module.exports = {
             https: false,
             public: true, // use local network IP address for hosting during development
             port: 3000,
-            open: false // open  on `npm start`
+            proxy: {} // e.g. { '/api': 'http://localhost:8080' }
          },
 
          // Automatically open a default browser on `npm start`
