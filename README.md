@@ -1,6 +1,6 @@
 # Atom Space React Preset
 
-`neutrino-preset-react-nodegui` is a [Neutrino](https://neutrino.js.org) preset for [React NodeGUI](https://react.nodegui.org/) applications development.
+`@atomspace/react` is a [Neutrino](https://neutrino.js.org) preset for React applications development.
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][npm-downloads]][npm-url]
@@ -12,25 +12,33 @@
 
 ## What features does this preset provide?
 
-This preset does all dirty job for setting up Webpack for you. It implements a setup of projects based on [NodeGUI and React](https://github.com/nodegui/react-nodegui).
+This preset does all dirty job for setting up Webpack for you. It implements a setup of projects based on [React](https://reactjs.org) in a browser.
 
 ### Features
 
-- Zero upfront configuration necessary to start developing and building a React NodeGUI app
-- Modern Babel compilation supporting ES modules, async functions, dynamic imports, ES class properties, rest spread operators, decorators and automatic polyfills bound to the platform
-- Sourcemaps
+- Zero upfront configuration necessary to start developing and building a React web app
+- Modern Babel compilation supporting ES modules, last several major browser versions, async functions, dynamic imports, ES class properties, rest spread operators, decorators and automatic polyfills bound to platforms
+- Production-optimized bundles with minification and source maps
 - Tree-shaking to create smaller bundles
-- Hot Module Replacement enabled with source-watching during development
+- Consider external dependencies sourcemaps for better debugging during development
+- Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
+- Webpack loaders for importing JSX components, TypeScript, CSS, LESS, images, icons, fonts and SVGs
+- Resolve URLs in JSX like in HTML for these elements: `img[src]`, `link[href]`, `Image[src]`, `video[src]`, `Video[src]`, `audio[src]`, `Audio[src]`
+- Webpack Dev Server during development on "localhost" and local network IP for external devices access
+- Automatic creation of HTML pages, no templating of "index.html" necessary
+- Hot Module Replacement enabled
 - Disabled redundant `[HMR]` console messages
-- Auto-open the application in the development mode
 - Debug console cleared on every file change. Your outdated logs will be removed
-- Webpack loaders for importing JSX components, TypeScript, CSS, images, icons and SVGs
-- User-friendly building progress bar
+- CSS classes isolation using [`react-scoped-styles`](https://www.npmjs.com/package/react-scoped-styles)
+- [MDX](https://mdxjs.com/) support
+- Favicon injection
+- Developer-friendly building progress bar
 - Detect and warn about circular dependencies during the build time
 - Git revision information through environment variables (VERSION, COMMITHASH, BRANCH)
-- Consider external dependencies sourcemaps for better debugging during development
-- Production-optimized bundles with minification
-- Resolve URLs in JSX like in HTML for these elements: `img[src]`, `link[href]`, `Image[src]`, `video[src]`, `Video[src]`, `audio[src]`, `Audio[src]`
+- Environment variables are automatically exposed if used
+- Bundle Analyzer for production and development builds
+- Auto-open the application in the development mode
+<!-- - Automatically discovers free HTTP port to run a server locally -->
 
 ## Requirements
 
@@ -40,11 +48,11 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 
 ## Installation
 
-`neutrino-preset-react-nodegui` can be installed with NPM. Inside your project, make sure `neutrino`, `webpack` and `neutrino-preset-react-nodegui` are development dependencies.
+`@atomspace/react` can be installed with NPM. Inside your project, make sure `neutrino`, `webpack` and `@atomspace/react` are development dependencies. Also you should install desired versions of `react` and `react-dom`
 
 ```bash
-npm install --save @nodegui/nodegui @nodegui/react-nodegui react
-npm install --save-dev neutrino neutrino-preset-react-nodegui webpack webpack-cli
+npm install --save react-dom react
+npm install --save-dev neutrino "@atomspace/react" webpack webpack-cli webpack-dev-server
 ```
 
 Now edit your project's `package.json` to add commands for starting and building the application:
@@ -52,9 +60,8 @@ Now edit your project's `package.json` to add commands for starting and building
 ```json
 {
   "scripts": {
-    "build": "webpack --mode production",
-    "start": "webpack --mode development",
-    "open": "qode --inspect ./build/index.js"
+     "start": "webpack-dev-server",
+     "build": "webpack"
   }
 }
 ```
@@ -62,11 +69,11 @@ Now edit your project's `package.json` to add commands for starting and building
 Then add the new file `.neutrinorc.js` in the root of the project:
 
 ```js
-let reactNodegui = require('neutrino-preset-react-nodegui');
+let react = require('@atomspace/react');
 
 module.exports = {
    use: [
-      reactNodegui()
+      react()
    ]
 };
 ```
@@ -81,42 +88,19 @@ module.exports = neutrino().webpack();
 
 ## Project Layout
 
-`neutrino-preset-react-nodegui` follows the standard [project layout](https://neutrino.js.org/project-layout) specified by Neutrino. This means that by default all project source code should live in a directory named `src` in the root of the project. This includes JavaScript files, stylesheets, images, and any other assets that would be available to your compiled project. Only files explicitly imported or lazy loaded to your project will be bundled. You may use JavaScript or TypeScript for development. The entry file may be any of both: `src/index.jsx` or `src/index.tsx`
+`@atomspace/react` follows the standard [project layout](https://neutrino.js.org/project-layout) specified by Neutrino. This means that by default all project source code should live in a directory named `src` in the root of the project. This includes JavaScript files, stylesheets, images, and any other assets that would be available to your compiled project. Only files explicitly imported or lazy loaded to your project will be bundled. You may use JavaScript or TypeScript for development. The entry file may be any of both: `src/index.jsx` or `src/index.tsx`
 
 ## Quickstart
 
-After installing Neutrino and this preset, add a new directory named `src` in the root of the project, with a single JSX file named `index.jsx` in it. The preset cares about mounting to the native environment and hot reload configuration. You only have to export your main component that refers to your application. Edit `src/index.jsx` file with the following:
+After installing Neutrino and this preset, add a new directory named `src` in the root of the project, with a single JSX file named `index.jsx` in it. The preset cares about mounting to the `<div id="root"></div>` element and hot reload configuration. You only have to export your main component that refers to your application. Edit `src/index.jsx` file with the following:
 
 ```jsx
-import { Text, Window, View } from '@nodegui/react-nodegui';
-import React from 'react';
-
-const styleSheet = `
-  #header {
-    font-size: 34px;
-    padding-top: 20px;
-    qproperty-alignment: 'AlignHCenter';
-  }
-`;
-
-export default class App extends React.Component {
-   render () {
-      return (
-         <Window
-            windowTitle="Hello world"
-            minSize={{ width: 500, height: 300 }}
-            styleSheet={styleSheet}
-         >
-            <View>
-               <Text id="header">I am a C++ programmer</Text>
-            </View>
-         </Window>
-      );
-   }
+export default function () {
+   return <h1>Hello</h1>;
 }
 ```
 
-You can change this code base to better match your needs. Import other parts of your application and render them inside. More projects examples can be found [here](https://github.com/nodegui/examples/tree/master/react-nodegui)
+You can change this code base to better match your needs. Import other parts of your application and render them inside.
 
 Start the app in a development mode:
 
@@ -124,16 +108,16 @@ Start the app in a development mode:
 npm start
 ```
 
-The console shows that application compilation is finished and can be inspected. Also the application itself will open in a new window.
+The console shows that application compilation is finished and started at "localhost:3000".
 
 ## Building
 
 The project builds static assets to the `build` directory by default when running `npm run build`:
 
 ```bash
-❯ webpack --mode production
+❯ webpack
 
-√ React-nodegui-starter 1.0.0 (NodeGui)
+√ React-app 1.0.0
   Compiled successfully in 15.77s
 
 Version: webpack 4.41.5
@@ -141,24 +125,14 @@ Time: 15700ms
 Built at: 2020-01-29 23:46:56
                                              Asset      Size  Chunks             Chunk Names
        images/1d535df5e2e3bb126160e27b9235024f.jpg  58.1 KiB          [emitted]
-nodegui_core-fdbc23f7957be55a3ba3fc4d551e99ac.node  1.13 MiB          [emitted]
-                                          index.js   365 KiB       0  [emitted]  index
+                                 compiled/index.js   365 KiB       0  [emitted]  index
 ```
 
-You can start a production version of built application with `npm run open`:
-
-```bash
-❯ qode --inspect ./build/index.js
-
-Debugger listening on ws://127.0.0.1:9229/bed4554e-8aa3-4547-8d7c-563e4be534a5
-For help, see: https://nodejs.org/en/docs/inspector
-```
-
-The production code can be inspected with remote debugger. But the sourcemaps will not work until you enable them for production in [options](#Preset-options)
+You can either serve or deploy the contents of this build directory as a static site.
 
 ## Hot Module Replacement
 
-As `neutrino-preset-react-nodegui` completely controls the launching of your application instance. It automatically enables Hot Module Replacement for all files during development. No extra configuration or changes in your source code are necessary. You don't need to restart the application every time files are changed.
+As `@atomspace/react` completely controls the launching of your application instance. It automatically enables Hot Module Replacement for all files during development. No extra configuration or changes in your source code are necessary. You don't need to restart the application every time files are changed.
 
 Using dynamic imports with `import()` will automatically create split points and hot replace those modules upon modification during development.
 
@@ -166,21 +140,9 @@ Using dynamic imports with `import()` will automatically create split points and
 
 If you wish to copy files to the build directory that are not imported from application code, you can place them in a directory within `src` called `static`. All files in this directory will be copied from `src/static` to `build/static`.
 
-## Styles
+### Favicon
 
-As QT uses its [own propriatary stylesheet syntax](https://doc.qt.io/qt-5/stylesheet-syntax.html) this preset supports loading CSS as a string. You can use it like this
-
-```jsx
-import { View, Text } from '@nodegui/react-nodegui';
-
-import styles from './styles.css';
-
-let element = (
-   <View styleSheet={styles}>
-      <Text id="header">I am a C++ programmer</Text>
-   </View>
-);
-```
+There is a special case for a favicon. You have to put a `favicon.ico` file in the source code folder. By default it is `src/favicon.ico`. The file name is conventional and can't be changed.
 
 ## Preset options
 
@@ -191,42 +153,67 @@ The following shows how you can pass an options object to the preset and overrid
 #### .neutrinorc.js
 
 ```js
-let reactNodegui = require('neutrino-preset-react-nodegui');
+let react = require('@atomspace/react');
 
 module.exports = {
    use: [
-      reactNodegui({
-         // Inject an application startup launcher. When `false` you need to setup mounting and HMR in your sorce code
+      react({
+         // Inject an application startup launcher. When `false` you need to setup DOM mounting and HMR in your sorce code
          launcher: true,
 
-         // The process title
+         // Document title and the name of the terminal progress bar
          title: `${packageJson.name} ${packageJson.version}`,
 
-         // Automatically open app on `npm start` and attach it to the compilation process
-         open: true,
+         // Options related to a development server
+         server: {
+            https: false,
+            public: true, // use local network IP address for hosting during development
+            port: 3000,
+            open: false // open  on `npm start`
+         },
+
+         // Automatically open a default browser on `npm start`
+         open: false,
+
+         // Add polyfills necessary for required browsers in `browsers` option depending on the usage in the code
+         polyfills: false,
+
+         // Supported browsers in a Browserlist format. The code will be transpiled to support them
+         browsers: [
+            'last 2 Chrome major versions',
+            'last 2 Firefox major versions',
+            'last 2 Edge major versions',
+            'last 2 Opera major versions',
+            'last 2 Safari major versions',
+            'last 2 iOS major versions',
+            'IE 11'
+         ],
 
          // Enable source maps in the production build. Development sourcemaps are not affected and always turned on
-         sourcemaps: false,
-
-         // Add all necessary polyfills required to support NodeJS depending on the usage in the code
-         polyfills: true
+         sourcemaps: true
       })
    ]
 };
 ```
 
-*Example: Disable auto-opening and always generate sourcemaps:*
+*Example: Enable HTTPS, enable auto-opening of a browser, change the page title, define supported browsers:*
 
 #### .neutrinorc.js
 
 ```js
-let reactNodegui = require('neutrino-preset-react-nodegui');
+let react = require('@atomspace/react');
 
 module.exports = {
    use: [
-      reactNodegui({
-         sourcemaps: true,
-         open: false
+      react({
+         server: {
+            https: true
+         },
+         open: true,
+         title: 'React App',
+         browsers: [
+            'last 3 versions'
+         ]
       })
    ]
 };
@@ -234,9 +221,9 @@ module.exports = {
 
 ## Customizing
 
-Consumers may provide their custom Webpack configurations for different parts of the current preset that will override its defaults. Also if you want to construct your own preset based on `neutrino-preset-react-nodegui` you can use information below.
+Consumers may provide their custom Webpack configurations for different parts of the current preset that will override its defaults. Also if you want to construct your own preset based on `@atomspace/react` you can use information below.
 
-To override the build configuration, start with the documentation on [customization](https://neutrino.js.org/customization). `neutrino-preset-react-nodegui` creates some conventions to make overriding the configuration easier once you are ready to make changes. Following the customization guide and knowing the rule, loader, and plugin IDs, you can override and augment the build by providing a function to your `.neutrinorc.js` use array. You can also make these changes from the Neutrino API in a custom middleware.
+To override the build configuration, start with the documentation on [customization](https://neutrino.js.org/customization). `@atomspace/react` creates some conventions to make overriding the configuration easier once you are ready to make changes. Following the customization guide and knowing the rule, loader, and plugin IDs, you can override and augment the build by providing a function to your `.neutrinorc.js` use array. You can also make these changes from the Neutrino API in a custom middleware.
 
 By default Neutrino, and therefore this preset, creates a single **main** `index` entry point to your application, and this maps to the `index.*` file in the `src` directory.
 
@@ -245,7 +232,7 @@ By default Neutrino, and therefore this preset, creates a single **main** `index
 You can customize a single entry point in your `.neutrinorc.js` and override a default one
 
 ```js
-let reactNodegui = require('neutrino-preset-react-nodegui');
+let react = require('@atomspace/react');
 
 module.exports = {
    options: {
@@ -254,24 +241,24 @@ module.exports = {
       }
    },
    use: [
-      reactNodegui()
+      react()
    ]
 };
 ```
 
 ### Launcher
 
-This preset wraps your application with NodeGUI renderer and Hot container. It can be configured using `launcher` property in the [preset options](#preset-options). So you don't need to think about how to mount and render your application. This is completely managed by `neutrino-preset-react-nodegui` preset.
+This preset wraps your application with React Hot Loader. It can be configured using `launcher` property in the [preset options](#preset-options). So you don't need to think about how to mount and render your application. This is completely managed by `@atomspace/react` preset.
 
 If you want to **disable** the launcher you need to explicitly set the option to `false`
 
 ```js
-reactNodegui({
+react({
    launcher: false
 });
 ```
 
-This turns your application into a regular Node.js application. You will have to manage starting by yourself as it is described in [NodeGUI documentation](https://react.nodegui.org/docs/guides/tutorial).
+This turns your application into a regular Web application. You will have to manage the starting by yourself as it is described in [React documentation](https://reactjs.org/docs/add-react-to-a-website.html).
 
 ## Webpack config
 
@@ -282,12 +269,12 @@ Sometime you want to extend Webpack configuration with custom loaders or plugins
 For example, you can add [TypeScript checking](https://www.npmjs.com/package/fork-ts-checker-webpack-plugin)
 
 ```js
-let koa = require('neutrino-preset-koa');
+let react = require('@atomspace/react');
 let TsChecker = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
    use: [
-      koa(),
+      react(),
       function (neutrino) {
          let prodMode = process.env.NODE_ENV === 'production';
 
@@ -324,6 +311,44 @@ Specifically for this plugin you also need to create `tsconfig.json` file
 
 It will enable highlighting in your code editor too.
 
+## Troubleshooting
+
+### Memory limit
+
+Quite often during the production build of large projects there is not enough memory for the NodeJS process.
+
+```bash
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+```
+
+To resolve this you should increase the limit using CLI flags
+
+```json
+{
+   "scripts": {
+      "build": "node --max-old-space-size=8192 node_modules/webpack/bin/webpack"
+   }
+}
+```
+
+### Local builds
+
+By default the project is built with settings optimized for Browser History API. It can't properly run in the File System using `file://` protocol. To make it run locally with double click on `index.html` you can add custom middleware to **.neutrinorc.js** file that overrides some settings
+
+```js
+let react = require('@atomspace/react');
+
+module.exports = {
+   use: [
+      react(),
+      function ({ config }) {
+         // necessary for correct work on local File System
+         config.output.publicPath('./');
+      }
+   ]
+};
+```
+
 ## VSCode tips
 
 ### Project settings
@@ -338,86 +363,10 @@ These are suggested workspace settings for VSCode editor:
 }
 ```
 
-This should prevent building as you type code.
+This should prevent constant building as you type code.
 
-### Launching in the VSCode Debugger
-
-Visual Studio Code has its own built-in debugger. You may launch and debug your application in the development and production modes using it. Add this configuration:
-
-#### launch.json
-
-```json
-{
-   "version": "0.2.0",
-   "configurations": [
-      {
-         "name": "Start",
-         "type": "node",
-         "request": "launch",
-         "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
-         "args": ["--mode", "development"],
-         "autoAttachChildProcesses": true,
-         "internalConsoleOptions": "openOnSessionStart",
-         "skipFiles": ["<node_internals>/**"],
-         "sourceMaps": true
-      },
-      {
-        "name": "Open",
-        "type": "node",
-        "request": "launch",
-        "cwd": "${workspaceFolder}",
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/qode",
-        "windows": {
-          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/qode.cmd"
-        },
-        "args": ["./build/index.js"],
-        "outputCapture": "std",
-        "skipFiles": ["<node_internals>/**"],
-        "sourceMaps": true
-      },
-      {
-        "name": "Debug",
-        "type": "node",
-        "request": "attach",
-        "port": 9229,
-        "skipFiles": ["<node_internals>/**"],
-        "sourceMaps": true
-      }
-   ]
-}
-```
-
-Use these 3 tasks for different purposes
-
-- **Start** instead of `npm start`. Builds with live reloading and opens app.
-- **Open** instead of `npm run open`. Opens what was built.
-- **Debug** when want to attach to a manually opened app with `--inspect` flag.
-
-## CI/CD tips
-
-### Travis CI
-
-To build your application in [Travis](https://travis-ci.com/) you need to configure a compatible environment. Suggested settings to make it work are
-
-#### .travis.yml
-
-```yml
-os: linux
-dist: bionic
-language: node_js
-node_js:
-  - "12"
-```
-
-## Knowledge base
-
-- [Qt Quick QML Types](https://doc.qt.io/qt-5/qtquick-qmlmodule.html)
-- [The Style Sheet Syntax](https://doc.qt.io/qt-5/stylesheet-syntax.html)
-- [Qt Style Sheets Examples](https://doc.qt.io/qt-5/stylesheet-examples.html)
-- [Qt Style Sheets Reference](https://doc.qt.io/qt-5/stylesheet-reference.html)
-
-[npm-image]: https://img.shields.io/npm/v/neutrino-preset-react-nodegui.svg
-[npm-downloads]: https://img.shields.io/npm/dt/neutrino-preset-react-nodegui.svg
-[npm-url]: https://npmjs.org/package/neutrino-preset-react-nodegui
-[build-status]: https://travis-ci.com/constgen/neutrino-preset-react-nodegui.svg?branch=master
-[travis-url]: https://travis-ci.com/constgen/neutrino-preset-react-nodegui
+[npm-image]: https://img.shields.io/npm/v/@atomspace/react.svg
+[npm-downloads]: https://img.shields.io/npm/dt/@atomspace/react.svg
+[npm-url]: https://npmjs.org/package/@atomspace/react
+[build-status]: https://travis-ci.org/atomspace/atomspace-react.svg?branch=master
+[travis-url]: https://travis-ci.org/atomspace/atomspace-react
