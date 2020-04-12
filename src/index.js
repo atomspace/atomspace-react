@@ -8,7 +8,6 @@ let react = require('@constgen/neutrino-react-loader');
 let image = require('@constgen/neutrino-image-loader');
 let svg = require('@constgen/neutrino-svg-loader');
 let progress = require('@constgen/neutrino-progress');
-let dependency = require('@constgen/neutrino-dependency');
 let revision = require('@constgen/neutrino-revision');
 let staticFiles = require('@constgen/neutrino-static-files');
 let mdx = require('@constgen/neutrino-mdx-loader');
@@ -18,10 +17,10 @@ let reactLauncher = require('@constgen/neutrino-react-launcher');
 let mode = require('@constgen/neutrino-mode');
 let sourcemap = require('@constgen/neutrino-sourcemap');
 let reactScopedStyles = require('@constgen/neutrino-react-scoped-styles');
+let optimization = require('@constgen/neutrino-optimization');
 
 let clean = require('./middlewares/clean');
 let eslint = require('./middlewares/eslint');
-let optimization = require('./middlewares/optimization');
 let open = require('./middlewares/open');
 
 module.exports = function (customSettings = {}) {
@@ -87,7 +86,6 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(svg());
 		neutrino.use(mdx());
 		neutrino.use(less());
-		neutrino.use(dependency());
 		neutrino.use(progress({ name: settings.title }));
 		neutrino.use(sourcemap({ prod: settings.sourcemaps }));
 		neutrino.use(revision());
