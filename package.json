@@ -34,7 +34,7 @@
 		"@constgen/neutrino-progress": "~1.4.0",
 		"@constgen/neutrino-react-launcher": "~1.0.1",
 		"@constgen/neutrino-react-loader": "~1.3.0",
-		"@constgen/neutrino-react-scoped-styles": "~1.3.0",
+		"@constgen/neutrino-react-scoped-styles": "~1.4.1",
 		"@constgen/neutrino-revision": "~1.0.0",
 		"@constgen/neutrino-sourcemap": "~1.1.0",
 		"@constgen/neutrino-static-files": "~1.0.0",
