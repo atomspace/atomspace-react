@@ -21,7 +21,6 @@ let optimization = require('@constgen/neutrino-optimization');
 
 let clean = require('./middlewares/clean');
 let eslint = require('./middlewares/eslint');
-let open = require('./middlewares/open');
 
 module.exports = function (customSettings = {}) {
 	return function (neutrino) {
@@ -56,6 +55,7 @@ module.exports = function (customSettings = {}) {
 			publicPath: '/',
 			hot: true,
 			devServer: {
+				open: settings.open,
 				hot: true,
 				port: settings.server.port,
 				host: settings.server.public ? '0.0.0.0' : 'localhost',
@@ -68,7 +68,10 @@ module.exports = function (customSettings = {}) {
 			},
 			html: {
 				title: settings.title,
-				favicon: faviconExists ? faviconPath : ''
+				favicon: faviconExists ? faviconPath : '',
+				meta: {
+					'X-UA-Compatible': { 'http-equiv': 'X-UA-Compatible', 'content': 'IE=edge' }
+				}
 			}
 		};
 		let reactSettings = {
@@ -92,7 +95,6 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(staticFiles());
 		neutrino.use(env());
 		neutrino.use(analysis());
-		if (settings.open) neutrino.use(open());
 		neutrino.use(optimization());
 		neutrino.use(eslint());
 
