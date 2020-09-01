@@ -43,8 +43,8 @@
 		"@neutrinojs/web": "9.1.0",
 		"@types/react": "16.9.34",
 		"deepmerge": "4.2.2",
-		"neutrino-middleware-less-loader": "~5.0.0",
-		"webpack-dev-server-waitpage": "1.0.0"
+		"neutrino-middleware-less-loader": "~6.0.1",
+		"neutrino-middleware-sass-loader": "~1.0.0"
 	},
 	"devDependencies": {
 		"@atomspace/eslint": "4.3.0",

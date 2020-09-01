@@ -22,8 +22,8 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 - Tree-shaking to create smaller bundles
 - Consider external dependencies sourcemaps for better debugging during development
 - Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
-- Webpack loaders for importing JSX components, TypeScript, CSS, LESS, images, icons, fonts and SVGs
-- Resolve URLs in JSX like in HTML for these elements: `img[src]`, `link[href]`, `Image[src]`, `video[src]`, `Video[src]`, `audio[src]`, `Audio[src]`
+- Webpack loaders for importing JSX components, TypeScript, CSS, LESS, SASS, images, icons, fonts and SVGs
+- Resolve URLs in JSX like in HTML for these elements: `img[src]`, `link[href]`, `Image[src]`, `video[src]`, `video[poster]`, `Video[src]`, `source[src]`, `audio[src]`, `Audio[src]`
 - Webpack Dev Server during development on "localhost" and local network IP for external devices access
 - Automatic creation of HTML pages, no templating of "index.html" necessary
 - Hot Module Replacement enabled
@@ -33,7 +33,7 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 - [MDX](https://mdxjs.com/) support
 - Favicon injection
 - Developer-friendly building progress bar
-- Detect and warn about circular dependencies during the build time
+- Detect and warn about circular and duplicated dependencies during the build time
 - Git revision information through environment variables (VERSION, COMMITHASH, BRANCH)
 - Environment variables are automatically exposed if used
 - Bundle Analyzer for production and development builds
@@ -45,6 +45,8 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 - Node.js v10+
 - Neutrino v9
 - Webpack v4
+- Webpack Dev Server v3
+- React v16, v17
 
 ## Installation
 
@@ -275,7 +277,7 @@ let TsChecker = require('fork-ts-checker-webpack-plugin');
 module.exports = {
    use: [
       react(),
-      function (neutrino) {
+      function tsCheckMiddleware (neutrino) {
          let prodMode = process.env.NODE_ENV === 'production';
 
          if (prodMode) return;
@@ -304,8 +306,8 @@ Specifically for this plugin you also need to create `tsconfig.json` file
       "moduleResolution": "node",
       "esModuleInterop": true
    },
-   "include": ["src/**/*"],
-   "exclude": ["node_modules"]
+   "include": ["src/**/*", "test/**/*"],
+   "exclude": ["node_modules", "build/**/*"]
 }
 ```
 

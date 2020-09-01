@@ -2,6 +2,7 @@ let path = require('path');
 let fs = require('fs');
 
 let less = require('neutrino-middleware-less-loader');
+let sass = require('neutrino-middleware-sass-loader');
 let deepmerge = require('deepmerge');
 let web = require('@neutrinojs/web');
 let react = require('@constgen/neutrino-react-loader');
@@ -89,6 +90,7 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(svg());
 		neutrino.use(mdx());
 		neutrino.use(less());
+		neutrino.use(sass());
 		neutrino.use(progress({ name: settings.title }));
 		neutrino.use(sourcemap({ prod: settings.sourcemaps }));
 		neutrino.use(revision());
