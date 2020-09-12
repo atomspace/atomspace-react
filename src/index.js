@@ -32,6 +32,7 @@ module.exports = function (customSettings = {}) {
 		let defaultSettings = {
 			launcher: true,
 			open: false,
+			clean: true,
 			server: {
 				port: 3000,
 				public: true,
@@ -91,7 +92,7 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(mdx());
 		neutrino.use(less());
 		neutrino.use(sass());
-		neutrino.use(progress({ name: settings.title }));
+		neutrino.use(progress({ name: settings.title, clean: settings.clean }));
 		neutrino.use(sourcemap({ prod: settings.sourcemaps }));
 		neutrino.use(revision());
 		neutrino.use(staticFiles());

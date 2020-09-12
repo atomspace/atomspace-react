@@ -163,6 +163,9 @@ module.exports = {
          // Inject an application startup launcher. When `false` you need to setup DOM mounting and HMR in your sorce code
          launcher: true,
 
+         // Clear console on every build
+         clean: true,
+
          // Document title and the name of the terminal progress bar
          title: `${packageJson.name} ${packageJson.version}`,
 
