@@ -50,6 +50,12 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 
 ## Installation
 
+If you have an absolutely empty project you need to initialize it first. **You can skip this step if you already have `package.json` file**
+
+```bash
+npm init -y
+```
+
 `@atomspace/react` can be installed with NPM. Inside your project, make sure `neutrino`, `webpack` and `@atomspace/react` are development dependencies. Also you should install desired versions of `react` and `react-dom`
 
 ```bash
@@ -58,6 +64,8 @@ npm install --save-dev neutrino "@atomspace/react" webpack webpack-cli webpack-d
 ```
 
 Now edit your project's `package.json` to add commands for starting and building the application:
+
+**package.json**
 
 ```json
 {
@@ -70,6 +78,8 @@ Now edit your project's `package.json` to add commands for starting and building
 
 Then add the new file `.neutrinorc.js` in the root of the project:
 
+**.neutrinorc.js**
+
 ```js
 let react = require('@atomspace/react');
 
@@ -81,6 +91,8 @@ module.exports = {
 ```
 
 And create a `webpack.config.js` file in the root of the project, that uses the Neutrino API to access the generated webpack config:
+
+**webpack.config.js**
 
 ```js
 let neutrino = require('neutrino');
@@ -95,6 +107,8 @@ module.exports = neutrino().webpack();
 ## Quickstart
 
 After installing Neutrino and this preset, add a new directory named `src` in the root of the project, with a single JSX file named `index.jsx` in it. The preset cares about mounting to the `<div id="root"></div>` element and hot reload configuration. You only have to export your main component that refers to your application. Edit `src/index.jsx` file with the following:
+
+**src/index.jsx**
 
 ```jsx
 export default function () {
