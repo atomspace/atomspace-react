@@ -32,7 +32,7 @@
 		"@constgen/neutrino-mode": "~1.9.2",
 		"@constgen/neutrino-optimization": "~1.9.2",
 		"@constgen/neutrino-progress": "~1.9.2",
-		"@constgen/neutrino-react-launcher": "~1.9.2",
+		"@constgen/neutrino-react-launcher": "~1.9.3",
 		"@constgen/neutrino-react-loader": "~1.9.2",
 		"@constgen/neutrino-react-scoped-styles": "~1.9.2",
 		"@constgen/neutrino-revision": "~1.9.2",
@@ -44,7 +44,9 @@
 		"@types/react": "~16.9.49",
 		"deepmerge": "4.2.2",
 		"neutrino-middleware-less-loader": "~6.0.3",
-		"neutrino-middleware-sass-loader": "~2.0.1"
+		"neutrino-middleware-sass-loader": "~2.0.1",
+		"pnp-webpack-plugin": "1.6.4",
+		"module-alias": "2.2.2"
 	},
 	"devDependencies": {
 		"@atomspace/eslint": "5.2.0",

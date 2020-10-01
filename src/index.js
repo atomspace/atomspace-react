@@ -22,6 +22,7 @@ let optimization = require('@constgen/neutrino-optimization');
 
 let clean = require('./middlewares/clean');
 let eslint = require('./middlewares/eslint');
+let pnp = require('./middlewares/pnp');
 
 module.exports = function (customSettings = {}) {
 	return function (neutrino) {
@@ -87,6 +88,7 @@ module.exports = function (customSettings = {}) {
 		neutrino.use(reactScopedStyles());
 		if (settings.launcher) neutrino.use(reactLauncher());
 		neutrino.use(clean());
+		neutrino.use(pnp());
 		neutrino.use(image());
 		neutrino.use(svg());
 		neutrino.use(mdx());
