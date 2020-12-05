@@ -19,7 +19,6 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 - Zero upfront configuration necessary to start developing and building a React web app
 - Modern Babel compilation supporting ES modules, last several major browser versions, async functions, dynamic imports, ES class properties, rest spread operators, decorators and automatic polyfills bound to platforms
 - Production-optimized bundles with minification and source maps
-- Tree-shaking to create smaller bundles
 - Consider external dependencies sourcemaps for better debugging during development
 - Chunking of external dependencies apart from application code. Share common dependencies between dynamic imports.
 - Webpack loaders for importing JSX components, TypeScript, CSS, LESS, SASS, images, icons, fonts and SVGs
@@ -30,6 +29,7 @@ This preset does all dirty job for setting up Webpack for you. It implements a s
 - Disabled redundant `[HMR]` console messages
 - Debug console cleared on every file change. Your outdated logs will be removed
 - CSS classes isolation using [`react-scoped-styles`](https://www.npmjs.com/package/react-scoped-styles)
+- CSS modules for `*.module.css` files with support of preprocessors
 - [MDX](https://mdxjs.com/) support
 - Favicon injection
 - Developer-friendly building progress bar
@@ -60,7 +60,7 @@ npm init -y
 
 ```bash
 npm install --save react-dom react
-npm install --save-dev neutrino "@atomspace/react" webpack webpack-cli webpack-dev-server
+npm install --save-dev neutrino "@atomspace/react" webpack@^4.43.0 webpack-cli@^3.3.12 webpack-dev-server
 ```
 
 Now edit your project's `package.json` to add commands for starting and building the application:
